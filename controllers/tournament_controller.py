@@ -1,5 +1,4 @@
 import time
-import copy
 from operator import itemgetter
 from operator import attrgetter
 import pandas as pd
@@ -74,14 +73,17 @@ class CreateTournamentController:
                     print("La date n'est pas valide")
             else:
                 print("Vous devez entrer un nombre entier")
-    
 
     def add_number_of_rounds(self):
         default_number_of_rounds = 4
-        print("Le nombre de rounds est de 4 par défaut.\n"
-          "Souhaitez-vous changer ce nombre ?")
+        print(
+            "Le nombre de rounds est de 4 par défaut.\n"
+            "Souhaitez-vous changer ce nombre ?"
+            )
         while True:
-            choice = input("Entrez 'Y' pour changer, ou 'N' pour continuer: ").lower()
+            choice = input(
+                "Entrez 'Y' pour changer, ou 'N' pour continuer: "
+            ).lower()
             if choice == "y":
                 while True:
                     number_of_rounds = input("Entrez le nombre de rounds: ")
@@ -95,10 +97,7 @@ class CreateTournamentController:
             elif choice == "n":
                 return default_number_of_rounds
             else:
-                print("Vous devez entrer 'Y' ou 'N'")
-
-
-
+                print("Veuillez entrer 'Y' ou 'N'")
 
     def add_time_control(self):
         print("Choisissez le contrôle du temps:")
@@ -119,30 +118,31 @@ class CreateTournamentController:
 
     def add_players_to_tournament(self):
         """Add the ids of the selected players in a list, and return the list"""
+
         view_main.ClearScreen()
+
         while True:
-            add_player_choice = input("\nVoulez-vous ajouter un joueur ?\n\n"
-                                    "Appuyer sur 'Y' pour confirmer, ou 'N' pour poursuivre: ")
-            
+            add_player_choice = input(
+                "\nVoulez-vous ajouter un joueur ?\n\n"
+                "Appuyer sur 'Y' pour confirmer, ou 'N' pour poursuivre: "
+            ).upper()
+
             if add_player_choice == "N":
                 return
             elif add_player_choice == "Y":
                 break
             else:
                 print("Appuyez sur 'Y' ou 'N'")
-        
+
         display_players_database = pd.read_json("models/players.json")
         print(display_players_database)
         print("\nVous devez choisir un nombre de joueurs pair\n")
         print("Joueurs dans le tournoi : " + str(self.players_ids) + "\n")
-        
         while True:
             id_choices = input("Entrez les numéros des joueurs séparés par des virgules (ex. 1,2,3): ")
-            
             try:
                 id_choices = [int(id) for id in id_choices.split(",")]
                 invalid_ids = [id for id in id_choices if id <= 0 or id > len(player_model.player_database)]
-                
                 if invalid_ids:
                     print(f"\nLes numéros suivants ne sont pas valides : {invalid_ids}\n")
                 elif any(id in self.players_ids for id in id_choices):
@@ -154,10 +154,8 @@ class CreateTournamentController:
                     break
             except ValueError:
                 print("\nVous devez entrer des numéros entiers séparés par des virgules (ex. 1,2,3)\n")
-        
         self.players_ids.extend(id_choices)
         print("Joueurs dans le tournoi : " + str(self.players_ids) + "\n")
-        
         self.add_players_to_tournament()
 
         # Iterate through the ids list, create instances of players, then sort them by ranking
@@ -167,10 +165,8 @@ class CreateTournamentController:
         self.tournament_values.append(self.players_ids.copy())
 
 
-
 class StartTournament:
     """Controller who start the tournament, stop when the tournament is ended"""
-
     MATCHS_PLAYED = []
     TOURS_PLAYED = []
 
@@ -300,8 +296,6 @@ class StartTournament:
         tournament_object = self.tournament.unserialized(choosen_tournament)
         return tournament_object
 
-
-
     def sort_player_first_tour(self, tournament):
         """Retourne une liste de joueurs triée pour le premier tour"""
         self.player = player_model.Player()
@@ -329,9 +323,7 @@ class StartTournament:
                 self.MATCHS_PLAYED.append({player_1.player_id, player_2.player_id})
             else:
                 pass
-
         return sorted_players
-
 
     def sort_players_by_score(self, tour_instance):
         """Retourne une liste de joueurs triée par score"""
@@ -384,8 +376,6 @@ class StartTournament:
         return players_sorted_by_score
 
 
-
-
 class TournamentReport:
     """Display the tournament reports"""
 
@@ -410,17 +400,21 @@ class TournamentReport:
         player_serialized.sort(key=lambda player: player.last_name)
         self.display_tournament.display_tournaments(tournament_serialized, player_serialized)
 
-
     def display_players_alphabetical(self, tournament_object):
-        player_serialized = [self.player.unserialized(self.players_database.get(doc_id=int(id))) for id in tournament_object.players_ids]
+        player_serialized = [
+            self.player.unserialized(self.players_database.get(doc_id=int(id)))
+            for id in tournament_object.players_ids
+        ]
         player_serialized.sort(key=lambda player: player.last_name)
         self.display_player.display_alphabetical(player_serialized)
 
     def display_players_ranking(self, tournament_object):
-        player_serialized = [self.player.unserialized(self.players_database.get(doc_id=int(id))) for id in tournament_object.players_ids]
+        player_serialized = [
+            self.player.unserialized(self.players_database.get(doc_id=int(id)))
+            for id in tournament_object.players_ids
+        ]
         player_serialized.sort(key=lambda player: player.ranking)
         self.display_player.display_ranking(player_serialized)
-
 
     def display_tours(self, tournament_object):
         tour_table = self.tournament_database.table("tours")
@@ -430,7 +424,6 @@ class TournamentReport:
             tour_start = tour["Debut"]
             tour_end = tour["Fin"]
             print(f"{tour_name} - Début: {tour_start} - Fin: {tour_end}\n")
-
 
     def display_matchs(self, tournament_object):
         tour_table = self.tournament_database.table("tours")
@@ -445,9 +438,10 @@ class TournamentReport:
                 player_2 = self.players_database.get(doc_id=player_2_id)
                 score_player_1 = match[0][1]
                 score_player_2 = match[1][1]
-                print(f"{player_1['Nom']} {player_1['Prenom']} (blanc) CONTRE {player_2['Nom']} {player_2['Prenom']} (noir)\n"
-                    f"Score : {score_player_1} -- {score_player_2}\n")
-
+                print(
+                    f"{player_1['Nom']} {player_1['Prenom']} CONTRE {player_2['Nom']} {player_2['Prenom']}\n"
+                    f"Score : {score_player_1} -- {score_player_2}\n"
+                    )
 
     def __call__(self):
         self.clear()

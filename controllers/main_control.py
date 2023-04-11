@@ -1,5 +1,4 @@
 import sys
-
 from views.view_main import MainDisplay, ClearScreen
 from controllers.create_menus import CreateMenus
 from controllers.player_controller import CreatePlayerController, PlayerReport
@@ -46,18 +45,7 @@ class HomeMenuController:
         self.choosen_controller.__call__()
 
 
-    def go_to_player_menu_controller(self):
-        return self.choosen_controller()
-
-    def go_to_tournament_menu_controller(self):
-        return self.choosen_controller()
-
-    def go_to_quit_app_controller(self):
-        return self.choosen_controller()
-
-
 class PlayerMenuController(HomeMenuController):
-
     def __init__(self):
         super().__init__()
         self.create_player = CreatePlayerController()
@@ -90,10 +78,7 @@ class PlayerMenuController(HomeMenuController):
         self.home_menu_controller.__call__()
 
 
-
 class TournamentMenuController(HomeMenuController):
-    """this class is used to manage the tournament menu"""
-
     def __init__(self):
         super().__init__()
         self.tournament_report_controller = TournamentReport()
@@ -133,8 +118,6 @@ class TournamentMenuController(HomeMenuController):
         self.home_menu_controller.__call__()
 
 
-
 class QuitAppController:
-
     def __call__(self):
         sys.exit()

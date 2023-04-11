@@ -18,7 +18,7 @@ class CreatePlayerController:
         player_values = [
             self.get_valid_input("Entrez le nom de famille: "),
             self.get_valid_input("Entrez le prénom: "),
-            self.get_chess_id(), 
+            self.get_chess_id(),
             self.get_birth_details(),
             self.get_valid_gender(),
             self.get_valid_ranking()
@@ -26,8 +26,6 @@ class CreatePlayerController:
         if self.validate_player(player_values):
             self.player_model.add_to_database(player_values)
         self.home_menu_controller()
-    
-   
 
     def get_chess_id(self, entered_ids=[]):
         while True:
@@ -39,9 +37,6 @@ class CreatePlayerController:
             else:
                 entered_ids.append(chess_id)
                 return chess_id
-
-
-
 
     @staticmethod
     def get_valid_input(message):
@@ -120,7 +115,6 @@ class PlayerReport:
         self.__call__()
 
     def __call__(self):
-        
         entry = self.create_menu(self.create_menu.players_report_menu)
 
         if entry == "1":
@@ -137,5 +131,3 @@ class PlayerReport:
         else:
             print("Invalid entry, please try again.")
             self.__call__()
-
-
