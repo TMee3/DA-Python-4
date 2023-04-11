@@ -201,4 +201,3 @@ class LoadTournamentDisplay:
                     tournaments_in_progress = True
 
         return tournaments_in_progress
-
