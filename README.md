@@ -2,18 +2,15 @@
 
 ### Openclassroom projet 04
 
-Projet consistant à créer une application permettant de créer la structure d'un tournoi d'échecs, permettant d'ajouter des joueurs dans une base de données. Le programme utilise un algorithme permettant de calculer la rotation des joueurs afin que les matchs soit équitables et ne se reproduisent pas (algorithme suisse de tournois).
+Le projet consiste à concevoir une application qui permet de mettre en place un tournoi d'échecs en créant sa structure et en ajoutant les joueurs dans une base de données. L'algorithme suisse de tournoi est utilisé pour calculer les rotations des joueurs, garantissant ainsi l'équité des matchs et évitant leur répétition.
 
-Le programme utilise le design pattern MVC (Modèles - Vues - Controlleurs), et utilise la librairie TinyDB pour sauvegarder les joueurs et les tournois.
+Le programme suit le design pattern MVC (Modèles-Vues-Contrôleurs) et utilise la bibliothèque TinyDB pour enregistrer les joueurs et les tournois. Les fonctionnalités de l'application incluent :
 
-Il permet de :
-
-- Créer et sauvegarder des joueurs.
-- Mettre à jour le classement d'un joueur.
-- Créer et sauvegarder des tournois.
-- Lancer des tournois.
-- Arrêter un tournoi en cours et le reprendre plus tard.
-
+- La création et l'enregistrement des joueurs.
+- La mise à jour du classement des joueurs.
+- La création et l'enregistrement des tournois.
+- Le lancement des tournois.
+- L'arrêt et la reprise des tournois en cours.
 
 
 ## Prérequis
@@ -27,11 +24,16 @@ Sur Mac, pressez ```touche command + espace``` et entrez ```terminal```.
 
 Sur Linux, vous pouvez ouviri un terminal en pressant les touches ```Ctrl + Alt + T```.
 
+1. Assurez-vous que vous utilisez une version de Python qui prend en charge venv. Les versions de Python 3.3 et supérieures incluent le module venv par défaut.
+2. Ouvrez une invite de commande et exécutez la commande suivante pour installer le module venv : 
+```bash
+python -m pip install --user virtualenv  ```
+ Cela installera le module venv dans votre environnement Python.
+3. Après avoir installé venv, vous pouvez créer un environnement virtuel en exécutant la commande suivante : ```bash Copy codepython -m venv myenv  ```  Cela créera un nouvel environnement virtuel nommé "myenv".
+4. Activez l'environnement virtuel en exécutant la commande suivante : bash Copy codesource myenv/bin/activate 
+```
 Le programme utilise plusieurs librairies externes, et modules de Python, qui sont repertoriés dans le fichier ```requirements.txt```
 
-Vous pouvez installer un environnement externe via la commande 
-```bash
-pip install venv
 ```
 dans le terminal, puis entrez la commande :
 
@@ -44,7 +46,7 @@ afin d'installer toutes les librairies.
 
 ## Démarrage 
 
-Le programme est écrit en Python, copier tous les fichiers et repertoires du repository, et lancer le programme depuis un terminal via la commande :
+Le programme étant écrit en Python, il suffit de copier tous les fichiers et répertoires du référentiel (ou dépôt), puis de lancer le programme à partir d'un terminal en utilisant la commande :
 
 ```bash
 python main.py
