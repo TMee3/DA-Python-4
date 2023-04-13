@@ -26,9 +26,8 @@ Sur Linux, vous pouvez ouviri un terminal en pressant les touches ```Ctrl + Alt 
 
 1. Assurez-vous que vous utilisez une version de Python qui prend en charge venv. Les versions de Python 3.3 et supérieures incluent le module venv par défaut.
 2. Ouvrez une invite de commande et exécutez la commande suivante pour installer le module venv : 
-```bash
-python -m pip install --user virtualenv  ```
- Cela installera le module venv dans votre environnement Python.
+python -m pip install --user virtualenv 
+  Cela installera le module venv dans votre environnement Python.
 3. Après avoir installé venv, vous pouvez créer un environnement virtuel en exécutant la commande suivante :
 
 
