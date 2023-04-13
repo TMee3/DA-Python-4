@@ -29,7 +29,9 @@ Sur Linux, vous pouvez ouviri un terminal en pressant les touches ```Ctrl + Alt 
 ```bash
 python -m pip install --user virtualenv  ```
  Cela installera le module venv dans votre environnement Python.
-3. Après avoir installé venv, vous pouvez créer un environnement virtuel en exécutant la commande suivante : ```bash Copy codepython -m venv myenv  ```  Cela créera un nouvel environnement virtuel nommé "myenv".
+3. Après avoir installé venv, vous pouvez créer un environnement virtuel en exécutant la commande suivante :
+ ```bash Copy codepython -m venv myenv  ```
+Cela créera un nouvel environnement virtuel nommé "myenv".
 4. Activez l'environnement virtuel en exécutant la commande suivante : bash Copy codesource myenv/bin/activate 
 ```
 Le programme utilise plusieurs librairies externes, et modules de Python, qui sont repertoriés dans le fichier ```requirements.txt```
