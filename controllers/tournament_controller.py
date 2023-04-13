@@ -274,27 +274,26 @@ class StartTournament:
         self.display_tournaments = view_main.TournamentDisplay()
         self.home_menu_controller = main_control.HomeMenuController()
 
-        if not self.display_tournaments():
+        if self.display_tournaments():
+
+            valid_entry = False
+            while not valid_entry:
+                print("Entrez le chiffre correspondant au tournoi")
+                choice = input("--> ")
+                try:
+                    choice.isdigit() is False
+                    int(choice) < len(tournament_model.tournament_database)
+                    int(choice) <= 0
+                except Exception:
+                    print("Vous devez entrer le chiffre correspondant au tournoi")
+                else:
+                    choosen_tournament = tournament_model.tournament_database.get(doc_id=int(choice))
+                    tournament_object = self.tournament.unserialized(choosen_tournament)
+                    return tournament_object
+        else:
             print("Pas de tournois créé, veuillez créer un tournoi")
             time.sleep(1)
             self.home_menu_controller()
-            return None
-
-        while True:
-            try:
-                print("Entrez le chiffre correspondant au tournoi")
-                choice = input("--> ")
-                if not choice.isdigit():
-                    raise ValueError("L'entrée doit être un chiffre.")
-                if int(choice) < 1 or int(choice) > len(tournament_model.tournament_database):
-                    raise ValueError("Choix invalide, veuillez entrer un chiffre correspondant à un tournoi.")
-                break
-            except ValueError as e:
-                print("Erreur : ", e)
-
-        choosen_tournament = tournament_model.tournament_database.get(doc_id=int(choice))
-        tournament_object = self.tournament.unserialized(choosen_tournament)
-        return tournament_object
 
     def sort_player_first_tour(self, tournament):
         """Retourne une liste de joueurs triée pour le premier tour"""
@@ -453,6 +452,13 @@ class TournamentReport:
             self.home_menu_controller()
 
         elif entry == "2":
+            # Affichage des tournois avec leur id
+            # Création d'une liste de tournois
+            # Demande de l'id du tournoi
+            for tournament in self.tournament_database:
+                tournament_object = self.tournament.unserialized(tournament)
+                print(f"{tournament.doc_id}")
+                # Affichage de l'id du tournoi
             tournament_chosen = False
             while not tournament_chosen:
                 choice_id = input("Entrez le numéro correspondant au tournoi : ")
