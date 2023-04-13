@@ -1,21 +1,65 @@
-Ce fichier readme décrit une application permettant de gérer un tournoi d'échecs, développée dans le cadre d'un projet d'Openclassroom. L'application permet de créer la structure d'un tournoi, d'ajouter des joueurs dans une base de données et utilise un algorithme de tournoi pour calculer la rotation des joueurs. Le design pattern MVC a été utilisé et la librairie TinyDB a été utilisée pour sauvegarder les joueurs et les tournois.
+# Application gérant un tournoi d'échecs
 
-Le document fournit également des instructions pour les prérequis, le démarrage et la génération du rapport flake8. Les prérequis comprennent l'installation de Python, de plusieurs librairies externes et de l'environnement virtuel venv. Les instructions pour démarrer le programme incluent la copie des fichiers et des répertoires du référentiel et l'exécution du programme depuis un terminal.
+### Openclassroom projet 04
 
-Le rapport flake8 est un outil de qualité du code qui vérifie la conformité avec les règles de codage et fournit des informations sur les erreurs et les avertissements. Le rapport flake8 pour ce projet ne contient aucune erreur.
+Projet consistant à créer une application permettant de créer la structure d'un tournoi d'échecs, permettant d'ajouter des joueurs dans une base de données. Le programme utilise un algorithme permettant de calculer la rotation des joueurs afin que les matchs soit équitables et ne se reproduisent pas (algorithme suisse de tournois).
+
+Le programme utilise le design pattern MVC (Modèles - Vues - Controlleurs), et utilise la librairie TinyDB pour sauvegarder les joueurs et les tournois.
+
+Il permet de :
+
+- Créer et sauvegarder des joueurs.
+- Mettre à jour le classement d'un joueur.
+- Créer et sauvegarder des tournois.
+- Lancer des tournois.
+- Arrêter un tournoi en cours et le reprendre plus tard.
 
 
-Pour pouvoir utiliser l'application, il est nécessaire d'installer Python, la dernière version étant disponible sur le site https://www.python.org/downloads/.
 
-Les scripts Python sont exécutés à partir d'un terminal. Pour ouvrir un terminal sur Windows, appuyez sur la touche Windows + R, puis entrez "cmd". Sur Mac, appuyez sur la touche Command + Espace, puis entrez "Terminal". Sur Linux, vous pouvez ouvrir un terminal en appuyant sur les touches Ctrl + Alt + T.
+## Prérequis
 
-L'application utilise plusieurs librairies externes et des modules Python qui sont répertoriés dans le fichier "requirements.txt". Vous pouvez installer un environnement virtuel en utilisant la commande "pip install myenv" dans le terminal. Ensuite, pour installer toutes les librairies, entrez la commande "pip install -r requirements.txt". Cela permettra de s'assurer que toutes les dépendances nécessaires sont installées et que l'application peut fonctionner correctement.
+Vous devez installer python, la dernière version se trouve à cette adresse 
+https://www.python.org/downloads/
 
-Pour lancer l'application, il est nécessaire de copier tous les fichiers et répertoires du référentiel. Ensuite, depuis un terminal, entrez la commande suivante : python main.py
-Cela permettra de lancer l'application.
+Les scripts python se lance depuis un terminal, pour ouvrir un terminal sur Windows, pressez ``` touche windows + r``` et entrez ```cmd```.
 
-Le référentiel contient également un rapport flake8, qui ne présente aucune erreur. Si vous souhaitez générer un nouveau rapport, vous pouvez installer le module flake8 et entrer la commande suivante dans le terminal : flake8
-Le fichier "setup.cfg" situé à la racine du référentiel contient les paramètres de génération du rapport. Le rapport sera généré dans le répertoire "flake-report".
+Sur Mac, pressez ```touche command + espace``` et entrez ```terminal```.
 
-Cette application a été développée en utilisant Python, TinyDB et le pattern MVC pour gérer les rotations des joueurs dans un tournoi d'échecs.
+Sur Linux, vous pouvez ouviri un terminal en pressant les touches ```Ctrl + Alt + T```.
 
+Le programme utilise plusieurs librairies externes, et modules de Python, qui sont repertoriés dans le fichier ```requirements.txt```
+
+Vous pouvez installer un environnement externe via la commande 
+```bash
+pip install venv
+```
+dans le terminal, puis entrez la commande :
+
+```bash
+pip install -r requirements.txt
+```
+afin d'installer toutes les librairies.
+
+
+
+## Démarrage 
+
+Le programme est écrit en Python, copier tous les fichiers et repertoires du repository, et lancer le programme depuis un terminal via la commande :
+
+```bash
+python main.py
+```
+
+
+
+## Rapport flake8
+
+Le repository contient un rapport flake8, qui n'affiche aucune erreur. Il est possible d'en générer un nouveau en installant le module ```flake8``` et en entrant dans le terminal :
+
+```bash
+flake8
+```
+
+Le fichier ```setup.cfg``` à la racine contient les paramètres concernant la génération du rapport.
+
+Le rapport se trouve dans le repertoire ```flake-report```

@@ -1,133 +1,137 @@
 from operator import attrgetter
+
 from controllers import main_control
 from models import player_model
 from views import view_main
 from controllers import create_menus
-import re
 
 
 class CreatePlayerController:
-    """Entrer tous les détails du joueur, puis ajouter le joueur dans la base de données"""
-
+    """Enter all the player's details, then add the player in the database"""
     def __init__(self):
-        self.player_keys = ["Nom", "Prénom", "FFE", "Date de naissance", "Sexe", "Classement"]
+        self.player_values = []
+        self.player_keys = ["Nom", "Prénom", "Date de naissance", "Sexe", "Classement", "FFE ID"]
         self.home_menu_controller = main_control.HomeMenuController()
 
     def __call__(self):
         self.player_model = player_model.Player()
-        player_values = [
-            self.get_valid_input("Entrez le nom de famille: "),
-            self.get_valid_input("Entrez le prénom: "),
-            self.get_chess_id(),
-            self.get_birth_details(),
-            self.get_valid_gender(),
-            self.get_valid_ranking()
-        ]
-        if self.validate_player(player_values):
-            self.player_model.add_to_database(player_values)
+        self.player_values.append(self.add_last_name())
+        self.player_values.append(self.add_first_name())
+        self.player_values.append(self.add_birth_details())
+        self.player_values.append(self.add_gender())
+        self.player_values.append(self.add_ranking())
+        self.player_values.append(self.add_ffe_id())
+        if self.validate_player():
+            self.player_model.add_to_database(self.player_values)
+        self.player_values.clear()
         self.home_menu_controller()
 
-    def get_chess_id(self, entered_ids=[]):
-        while True:
-            chess_id = input("Entrez l'identifiant FFE: ")
-            if not re.match(r'^[A-Za-z]{2}\d{5}$', chess_id):
-                print("Vous devez entrer un identifiant FFE valide. Exemple: AA12345")
-            elif chess_id in entered_ids:
-                print("Cet identifiant a déjà été saisi.")
+    def add_last_name(self):
+        valid_last_name = False
+        while not valid_last_name:
+            last_name = input("Entrez le nom de famille: ")
+            if last_name != "":
+                valid_last_name = True
             else:
-                entered_ids.append(chess_id)
-                return chess_id
+                print("Vous devez entrer un nom")
+        return last_name
 
-    @staticmethod
-    def get_valid_input(message):
-        while True:
-            user_input = input(message)
-            if user_input != "":
-                return user_input
+    def add_first_name(self):
+        valid_first_name = False
+        while not valid_first_name:
+            first_name = input("Entrez le prénom: ")
+            if first_name != "":
+                valid_first_name = True
             else:
-                print("Vous devez entrer une valeur.")
+                print("Vous devez entrer un prénom ")
+        return first_name
 
-    @staticmethod
-    def get_birth_details():
-        while True:
-            day = CreatePlayerController.get_valid_input("Entrez le jour de naissance: ")
-            month = CreatePlayerController.get_valid_input("Entrez le mois de naissance: ")
-            year = CreatePlayerController.get_valid_input("Entrez l'année de naissance: ")
-            if day.isdigit() and month.isdigit() and year.isdigit():
-                # TODO: check if the date is valid
-                if int(day) < 32 and int(month) < 13 and int(year) < 2023:
-                    return f"{day}/{month}/{year}"
-            print("Veuillez entrer des valeurs valides pour la date de naissance.")
+    def add_birth_details(self):
+        valid_birth_details = False
+        while not valid_birth_details:
+            birth_details = input("Entrez la date de naissance (jj/mm/aaaa): ")
+            if len(birth_details) == 10 and birth_details[2] == "/" and birth_details[5] == "/":
+                valid_birth_details = True
+            else:
+                print("Vous devez entrer une date de naissance valide (jj/mm/aaaa)")
+        return birth_details
 
-    @staticmethod
-    def get_valid_gender():
-        while True:
+    def add_gender(self):
+        valid_gender = False
+        validated_gender = None
+        while not valid_gender:
             gender = input("Choisissez le genre du joueur \n"
                            "'H' pour un homme \n'F' pour une femme: ")
-            if gender.upper() == "H":
-                return "Homme"
-            elif gender.upper() == "F":
-                return "Femme"
+            if gender == "H":
+                valid_gender = True
+                validated_gender = "Homme"
+            elif gender == "F":
+                valid_gender = True
+                validated_gender = "Femme"
             else:
                 print("Vous devez entrer un genre (H ou F)")
+        return validated_gender
 
-    @staticmethod
-    def get_valid_ranking():
-        while True:
+    def add_ranking(self):
+        valid_ranking = False
+        while not valid_ranking:
             ranking = input("Entrez le classement du joueur: ")
-            # TODO: check if the ranking is valid
-            # ex: 1.5 is not valid, but 1500 is
             if ranking.isdigit() and int(ranking) >= 0:
-                return int(ranking)
+                valid_ranking = True
             else:
-                print("Vous devez entrer un nombre entier positif.")
+                print("Vous devez entrer un nombre entier positif")
+        return int(ranking)
 
-    def validate_player(self, player_values):
-        # TODO: check if the player already exists in the database
-        view_main.FrameDisplay.display_datas_in_a_frame(player_values, self.player_keys)
-        while True:
-            choice = input("Valider ce joueur ? \n'Y' pour valider, 'N' pour recommencer\n--> ")
-            if choice.upper() == "Y":
+    def add_ffe_id(self):
+        # ffe id example: AB12345
+        valid_ffe_id = False
+        while not valid_ffe_id:
+            ffe_id = input("Entrez l'ID FFE du joueur: ")
+            if len(ffe_id) == 7 and ffe_id[0:2].isalpha() and ffe_id[2:].isdigit():
+                valid_ffe_id = True
+            else:
+                print("Vous devez entrer un ID FFE valide (AB12345)")
+        return ffe_id
+
+    def validate_player(self):
+        view_main.FrameDisplay.display_datas_in_a_frame(self.player_values, self.player_keys)
+
+        valid_player = False
+        while not valid_player:
+            validate_player = input("Valider le joueur ? (O/N): ")
+            if validate_player == "O":
+                valid_player = True
                 return True
-            elif choice.upper() == "N":
-                self.home_menu_controller()
+            elif validate_player == "N":
+                valid_player = True
+                return False
             else:
-                print("Vous devez entrer 'Y' ou 'N'.")
-
+                print("Vous devez entrer O ou N")
 
 class PlayerReport:
-    """Affiche les rapports des joueurs"""
+    """Display the players reports"""
 
-    def __init__(self):
+    def __call__(self):
         self.create_menu = create_menus.CreateMenus()
         self.home_menu_controller = main_control.HomeMenuController()
         self.display_player = view_main.DisplayPlayersReport()
         self.players_database = player_model.player_database
         self.player = player_model.Player()
+        player_serialized = []
 
-    def _get_player_serialized(self):
-        return [self.player.unserialized(player) for player in self.players_database]
+        for player in self.players_database:
+            player_serialized.append(self.player.unserialized(player))
 
-    def _sort_and_display_players(self, key, display_function):
-        player_serialized = self._get_player_serialized()
-        player_serialized.sort(key=attrgetter(key))
-        display_function(player_serialized)
-        self.__call__()
-
-    def __call__(self):
+        self.display_player()
         entry = self.create_menu(self.create_menu.players_report_menu)
 
         if entry == "1":
-            # Sort the list of players by last name
-            self._sort_and_display_players("last_name", self.display_player.display_alphabetical)
-
-        elif entry == "2":
-            # Sort the list of players by ranking
-            self._sort_and_display_players("ranking", self.display_player.display_ranking)
-
-        elif entry == "3":
-            # go back to the home menu
+            player_serialized.sort(key=attrgetter("last_name"))
+            self.display_player.display_alphabetical(player_serialized)
+            PlayerReport.__call__(self)
+        if entry == "2":
+            player_serialized.sort(key=attrgetter("ranking"))
+            self.display_player.display_ranking(player_serialized)
+            PlayerReport.__call__(self)
+        if entry == "3":
             self.home_menu_controller()
-        else:
-            print("Invalid entry, please try again.")
-            self.__call__()
