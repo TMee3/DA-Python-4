@@ -5,7 +5,6 @@ from views import view_main
 
 player_database = TinyDB('models/players.json')
 
-
 class Player:
     def __init__(self, last_name=None, first_name=None, birthdate=None, chess_id=None,
                  gender=None, ranking=None, tournament_score=0, player_id=0):
@@ -19,27 +18,34 @@ class Player:
         self.player_id = player_id
 
     def serialized(self):
-        return {
-            'Nom': self.last_name,
-            'Prenom': self.first_name,
-            'Date de naissance': self.birthdate,
-            'FFE': self.chess_id,
-            'Sexe': self.gender,
-            'Classement': self.ranking,
-            'Score': self.tournament_score,
-            'Id du joueur': self.player_id
-        }
+        player_infos = {}
+        player_infos['Nom'] = self.last_name
+        player_infos['Prenom'] = self.first_name
+        player_infos['Date de naissance'] = self.birthdate
+        player_infos['FFE'] = self.chess_id
+        player_infos['Sexe'] = self.gender
+        player_infos['Classement'] = self.ranking
+        player_infos['Score'] = self.tournament_score
+        player_infos['Id du joueur'] = self.player_id
+        return player_infos
+
+    def unserialized(self, serialized_player):
+        last_name = serialized_player["Nom"]
+        first_name = serialized_player["Prenom"]
+        birthdate = serialized_player["Date de naissance"]
+        chess_id = serialized_player["FFE"]
+        gender = serialized_player["Sexe"]
+        ranking = serialized_player["Classement"]
+        tournament_score = serialized_player["Score"]
+        player_id = serialized_player["Id du joueur"]
+        return Player(last_name, first_name, birthdate, chess_id, gender, ranking,
+                      tournament_score, player_id)
 
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
 
     def __repr__(self):
         return f"{self.last_name} {self.first_name}, classement : {self.ranking}"
-
-    @classmethod
-    def get_player(cls, player_id):
-        player_to_modify = player_database.get(doc_id=int(player_id))
-        return cls.unserialized(player_to_modify)
 
     def update_ranking(self):
         self.home_menu_controller = main_control.HomeMenuController()
@@ -48,31 +54,31 @@ class Player:
 
         self.view_players()
 
-        while True:
+        valid_id = False
+        while not valid_id:
             player_id = input("Entrer le numéro du joueur : ")
             if player_id.isdigit() and int(player_id) >= 0 and int(player_id) <= len(self.players_database):
-                break
+                valid_id = True
             else:
                 print("Vous devez entrer le numéro correspondant au joueur")
 
-        while True:
+        valid_ranking = False
+        while not valid_ranking:
             new_ranking = input("Entrez le nouveau classement : ")
             if new_ranking.isdigit() and int(new_ranking) >= 0:
-                break
+                valid_ranking = True
             else:
                 print("Vous devez entrer un nombre entier positif")
 
-        player = self.get_player(player_id)
-        player.ranking = int(new_ranking)
+        player_to_modify = player_database.get(doc_id=int(player_id))
+        player_to_modify["Classement"] = new_ranking
 
+        print(f"{player_to_modify['Nom']} {player_to_modify['Prenom']} \n"
+              f"Nouveau classement : {player_to_modify['Classement']}")
         player_database.update({"Classement": int(new_ranking)}, doc_ids=[int(player_id)])
-        print(f"{player.last_name} {player.first_name} \nNouveau classement : {new_ranking}")
         time.sleep(2.5)
         self.home_menu_controller()
 
-    @classmethod
-    def add_to_database(cls, player_values):
-        player = cls(*player_values)
-        player_id = player_database.insert(player.serialized())
-        player_database.update({'Id du joueur': player_id}, doc_ids=[player_id])
-        time.sleep(2)
+    def add_to_database(self, player_values):
+        player = Player(player_values[0], player_values[1], player_values[2], player_values[3], player_values[4])
+        player_id = player_database.insert
